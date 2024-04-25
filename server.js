@@ -15,6 +15,7 @@ const getFiles = async () => {
 };
 
 http.createServer(async ({ url }, res) => {
+    const [indexHtml, indexJs] = await getFiles()
     if (url.includes("Registration")) {
         const registrationObjectUrl = url.split('=')[1];
         const decodedReg = JSON.parse(decodeURIComponent(registrationObjectUrl));
@@ -47,7 +48,6 @@ http.createServer(async ({ url }, res) => {
                 res.end();
             }
         } else {
-        const [indexHtml, indexJs] = await getFiles()
         switch (url) {
             case '/':
                 res.writeHead(200, { "Content-Type": "text/html" });
