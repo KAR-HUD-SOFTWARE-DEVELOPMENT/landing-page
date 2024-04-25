@@ -17,10 +17,10 @@ const onSubmit = async (dataLog)=>{
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
     }
-  else{alert("BŁĘDNE DANE")}
-
+  else if (json === false) {
+    alert("BŁĘDNE DANE MENDO")
 }
-
+}
 return(
   <div className="login">
   <form onSubmit={handleSubmit(onSubmit)}>
