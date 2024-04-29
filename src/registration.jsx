@@ -6,15 +6,14 @@ export const Registration = ()=> {
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
   
-
   const onSubmit = async (dataReg) => {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
     const res = await fetch(`http://localhost:8008/Registration=${encodedObject}`)
-    const json = await res.json()
-    if (json === false){
+    const resJson = await res.json()
+    if (resJson === false){
       alert("zarejestrowano poprawnie")
     }
-    else if(json){
+    else if(resJson){
         alert("uzytkownik istnieje")
     }
     
@@ -37,7 +36,9 @@ export const Registration = ()=> {
       placeholder="Password"/>
     </label>
       <button type="submit"> ZAREJESTRUJ</button>
-      <button onClick={()=>navigate(-1)}> WRÓĆ DO LOGOWANIA</button>
+      <div>
+      <button type="submit" onClick={()=>navigate("/")}> WRÓĆ DO LOGOWANIA</button>
+      </div>
     </form>
     </div>
   )

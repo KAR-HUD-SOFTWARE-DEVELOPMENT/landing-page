@@ -1,7 +1,6 @@
 const http = require("http");
 const fs = require("fs/promises");
 
-
 const getFiles = async () => {
     const indexHtml = await fs.readFile("./index.html");
     const indexJs = await fs.readFile("./dist/r.bundle.js");
@@ -22,6 +21,7 @@ http.createServer(async ({ url }, res) => {
         }
         const response = exists ? JSON.stringify(decodedReg) : exists.toString();
         const buffer = Buffer.from(response);
+        console.log("reg",registrations)
         res.writeHead(200, { "Content-Type": "text/javascript" });
         res.write(buffer);
         res.end();
@@ -29,41 +29,39 @@ http.createServer(async ({ url }, res) => {
     else if (url.includes("youLogIn")) {
         const LoginObjectUrl = url.split('=')[1];
         const decodedlog = JSON.parse(decodeURIComponent(LoginObjectUrl));
+        const stringify = JSON.stringify(decodedlog);
         let loggedIn = false;
+
         registrations.find(registration => {
             if (registration.email === decodedlog.email && 
                 registration.password === decodedlog.password) {
-                loggedIn = true;
+                loggedIn = true
+            }});
+            if (loggedIn) {
+                const buffer = Buffer.from(stringify)
+                res.writeHead(200, { "Content-Type": "text/javascript" })
+                res.write(buffer)
+                res.end()
+            } else if (!loggedIn) {
+                res.write(loggedIn.toString())
+                res.end()
             }
-        });
-        if (loggedIn) {
-            const stringify = JSON.stringify(decodedlog);
-            const buffer = Buffer.from(stringify);
-            res.writeHead(200, { "Content-Type": "text/javascript" });
-            res.write(buffer);
-            res.end();
         } else {
-            res.writeHead(200, { "Content-Type": "text/javascript" });
-            res.write(loggedIn.toString());
-            res.end();
-        }
-    } 
-    if (!url.includes("Registration") && !url.includes("youLogIn")) {
         switch (url) {
             case '/':
-                res.writeHead(200, { "Content-Type": "text/html" });
-                res.write(indexHtml);
-                res.end();
+                res.writeHead(200, { "Content-Type": "text/html" })
+                res.write(indexHtml)
+                res.end()
                 break;
             case '/js':
-                res.writeHead(200, { "Content-Type": "text/javascript" });
-                res.write(indexJs);
-                res.end();
-                break;
+                res.writeHead(200, { "Content-Type": "text/javascript" })
+                res.write(indexJs)
+                res.end()
+                break
             default:
-                res.writeHead(404);
-                res.write('Strona nie znaleziona');
-                res.end();
+                res.writeHead(404)
+                res.write('Strona nie znaleziona')
+                res.end()
         }
     }
-}).listen(8008);
+}).listen(8008)

@@ -2,23 +2,22 @@ import React from "react";
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 
-
-
 export const Login =()=>{
 const {register, handleSubmit} = useForm()
 const navigate = useNavigate()
-
 
 const onSubmit = async (dataLog)=>{
   let encodedObject = encodeURIComponent(JSON.stringify(dataLog));
   const res = await fetch(`http://localhost:8008/youLogIn=${encodedObject}`)
   const json = await res.json()
-  if(json === false){  
+  if(json){  
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
+      console.log(json)
     }
-  else if (json) {
+  else if (json === false) {
     alert("BŁĘDNE DANE MENDO")
+    console.log(json)
 }
 }
 return(
