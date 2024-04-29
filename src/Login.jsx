@@ -13,11 +13,11 @@ const onSubmit = async (dataLog)=>{
   let encodedObject = encodeURIComponent(JSON.stringify(dataLog));
   const res = await fetch(`http://localhost:8008/youLogIn=${encodedObject}`)
   const json = await res.json()
-  if(json){  
+  if(json === false){  
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
     }
-  else if (json === false) {
+  else if (json) {
     alert("BŁĘDNE DANE MENDO")
 }
 }
