@@ -6,7 +6,7 @@ export const Succesfull =() =>{
 
     return (
     <div className="success">
-        <div>Jesteś zalogowany!</div>
+        <div>myślisz że jesteś fajny? chuj ci w dupe cfelu</div>
         <button onClick={()=>navigateLogin(-1)}> WYLOGUJ
       </button>
     </div>

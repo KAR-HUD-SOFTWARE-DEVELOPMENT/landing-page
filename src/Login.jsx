@@ -13,11 +13,9 @@ const onSubmit = async (dataLog)=>{
   if(json){  
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
-      console.log(json)
     }
-  else if (json === false) {
+  else {
     alert("BŁĘDNE DANE MENDO")
-    console.log(json)
 }
 }
 return(

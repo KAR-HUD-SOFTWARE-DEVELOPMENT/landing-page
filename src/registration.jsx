@@ -10,12 +10,10 @@ export const Registration = ()=> {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
     const res = await fetch(`http://localhost:8008/Registration=${encodedObject}`)
     const resJson = await res.json()
-    if (resJson === false){
-      alert("zarejestrowano poprawnie")
+    if (typeof resJson === "object" ){
+      alert("kongratulejszyn")
     }
-    else if(resJson){
-        alert("uzytkownik istnieje")
-    }
+    else{alert("kajak od tyłu to wciąż kajak, a ty od tyłu jestes jebany, bo ktoś juz ci mejla zajumał")}
     
   }
   return (
