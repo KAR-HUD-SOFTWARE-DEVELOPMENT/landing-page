@@ -9,11 +9,11 @@ export const Registration = ()=> {
   const onSubmit = async (dataReg) => {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
     const res = await fetch(`http://localhost:8008/Registration=${encodedObject}`)
-    const resJson = await res.json()
-    if (typeof resJson === "object" ){
+    if (res.status === 201){
       alert("kongratulejszyn")
     }
-    else{alert("kajak od tyłu to wciąż kajak, a ty od tyłu jestes jebany, bo ktoś juz ci mejla zajumał")}
+    else if(res.status === 409){
+      alert("kajak od tyłu to wciąż kajak, a ty od tyłu jestes jebany, bo ktoś juz ci mejla zajumał")}
     
   }
   return (
