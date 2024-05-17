@@ -2,11 +2,16 @@ import React from "react";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 export const Registration = ()=> {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm<FormData>();
   const navigate = useNavigate()
   
-  const onSubmit = async (dataReg) => {
+  const onSubmit = async (dataReg : FormData) => {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
     const res = await fetch(`http://localhost:8008/Registration=${encodedObject}`)
     if (res.status === 201){

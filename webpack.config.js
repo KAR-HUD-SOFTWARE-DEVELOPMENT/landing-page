@@ -14,9 +14,14 @@ module.exports = {
             use: ["babel-loader"],
             exclude: /node-modules/
             },
+            {
+            test: /\.tsx?/,
+            use: 'ts-loader',
+            exclude: /node_modules/
+            },
         ]
     },
     resolve: {
-        extensions : ['.js', '.jsx'] 
+        extensions : ['.js','.jsx','.tsx','.ts'] 
     }
 }

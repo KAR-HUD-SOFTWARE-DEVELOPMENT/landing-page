@@ -3,16 +3,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
 
+interface FormData {
+  email: string;
+  password: string;
+}
 
 export const Login =()=>{
-const {register, handleSubmit} = useForm()
+const {register, handleSubmit} = useForm<FormData>()
 const navigate = useNavigate()
 
 
-const onSubmit = async (dataLog)=>{
+const onSubmit = async (dataLog :FormData)=>{
   let encodedObject = encodeURIComponent(JSON.stringify(dataLog));
   const res = await fetch(`http://localhost:8008/youLogIn=${encodedObject}`)
-  if(res){  
+  if(typeof res === "object" ){  
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
     } 

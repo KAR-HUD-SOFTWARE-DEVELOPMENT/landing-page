@@ -1,21 +1,17 @@
 const http = require("http");
-const fs = require("fs/promises");
+const fs = require("fs/promises")
 
 
 const getFiles = async () => {
     const indexHtml = await fs.readFile("./index.html");
-    const indexJs = await fs.readFile("./dist/r.bundle.js");
+    const indexJs = await fs.readFile("./dist/r.bundle.js")
     return [indexHtml, indexJs];
 };
 
-
-
 const registrations = []
-const sessions = {};
-
 
 http.createServer(async ({ url }, res) => {
-    const [indexHtml, indexJs] = await getFiles();
+    const [indexHtml, indexJs] = await getFiles()
     if (url.includes("Registration")) {
         const registrationObjectUrl = url.split('=')[1];
         const decodedReg = JSON.parse(decodeURIComponent(registrationObjectUrl));
@@ -25,9 +21,9 @@ http.createServer(async ({ url }, res) => {
             registrations.push(decodedReg)
             const stringi = JSON.stringify(decodedReg)
             const buffer = Buffer.from(stringi)
-            res.writeHead(201, { "Content-Type": "text/javascript" });
-            res.write(buffer);
-            res.end();
+            res.writeHead(201, { "Content-Type": "text/javascript" })
+            res.write(buffer)
+            res.end()
             }else if(exists){
             res.writeHead(409, { "Content-Type": "text/javascript" })
             res.write(exists.toString())
@@ -36,21 +32,23 @@ http.createServer(async ({ url }, res) => {
         }
         else if (url.includes("youLogIn")) {
             const LoginObjectUrl = url.split('=')[1]
-            const decodedlog = JSON.parse(decodeURIComponent(LoginObjectUrl));
-            const stringi = JSON.stringify(decodedlog)
+            const decod = LoginObjectUrl === undefined ?
+             registrations : JSON.parse(decodeURIComponent(LoginObjectUrl))
+            const decodedlog = decod ? JSON.stringify(decod) : JSON.stringify(LoginObjectUrl)
             let loggedIn = registrations.some(registration => 
                 registration.email === decodedlog.email &&
                 registration.password === decodedlog.password)
-            if (loggedIn) {
-                const buffer = Buffer.from(stringi)
-                res.writeHead(200, { "Content-Type": "text/javascript" })
-                res.write(buffer)
-                res.end();
-            }else{
-                res.writeHead(402, { "Content-Type": "text/javascript" })
-                res.write("ups")
-                res.end();
-            }
+                if (loggedIn ) {
+                    const buffer = Buffer.from(decodedlog)
+                    loggedIn = false
+                    res.writeHead(200, { "Content-Type": "text/javascript" })
+                    res.write(buffer)
+                    res.end()
+                }else if (!loggedIn) {
+                    res.writeHead(422, { "Content-Type": "text/javascript" })
+                    res.write(loggedIn.toString())
+                    res.end()
+                }
         }
         else {
         switch (url) {
@@ -71,6 +69,3 @@ http.createServer(async ({ url }, res) => {
         }
     }
 }).listen(8008)
-const generateUniqueSessionId =()=> {
-    return Math.random().toString(36).substring(2, 15);
-}
