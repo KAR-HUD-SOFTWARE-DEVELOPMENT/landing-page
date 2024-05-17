@@ -13,8 +13,6 @@ const onSubmit = async (dataLog)=>{
   let encodedObject = encodeURIComponent(JSON.stringify(dataLog));
   const res = await fetch(`http://localhost:8008/youLogIn=${encodedObject}`)
   if(res){  
-      const {sessionId} = await res.json()
-      localStorage.setItem('sessionId', sessionId);
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
     } 

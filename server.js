@@ -43,14 +43,13 @@ http.createServer(async ({ url }, res) => {
                 registration.password === decodedlog.password)
             if (loggedIn) {
                 const buffer = Buffer.from(stringi)
-                const sessionId = generateUniqueSessionId()
-                sessions[sessionId] = { email: decodedlog.email }
-                res.setHeader('Set-Cookie', `session=${sessionId}Path=/`)
+                res.writeHead(200, { "Content-Type": "text/javascript" })
                 res.write(buffer)
                 res.end();
-            } else {
-                res.writeHead(422, { "Content-Type": "text/javascript" })
-                res.end('{"error": "Invalid credentials"}');
+            }else{
+                res.writeHead(402, { "Content-Type": "text/javascript" })
+                res.write("ups")
+                res.end();
             }
         }
         else {
