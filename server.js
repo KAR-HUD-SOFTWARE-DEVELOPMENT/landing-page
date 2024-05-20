@@ -1,5 +1,5 @@
 const http = require("http");
-const fs = require("fs/promises")
+const fs = require("fs/promises");
 
 
 const getFiles = async () => {
@@ -32,23 +32,31 @@ http.createServer(async ({ url }, res) => {
         }
         else if (url.includes("youLogIn")) {
             const LoginObjectUrl = url.split('=')[1]
-            const decod = LoginObjectUrl === undefined ?
-             registrations : JSON.parse(decodeURIComponent(LoginObjectUrl))
-            const decodedlog = decod ? JSON.stringify(decod) : JSON.stringify(LoginObjectUrl)
-            let loggedIn = registrations.some(registration => 
-                registration.email === decodedlog.email &&
-                registration.password === decodedlog.password)
-                if (loggedIn ) {
-                    const buffer = Buffer.from(decodedlog)
-                    loggedIn = false
-                    res.writeHead(200, { "Content-Type": "text/javascript" })
-                    res.write(buffer)
-                    res.end()
-                }else if (!loggedIn) {
-                    res.writeHead(422, { "Content-Type": "text/javascript" })
-                    res.write(loggedIn.toString())
-                    res.end()
-                }
+            let arrReg = []
+            if(typeof LoginObjectUrl === "string") {
+                const parsed =JSON.parse(decodeURIComponent(LoginObjectUrl))
+                arrReg.push(parsed)
+            }
+            if(LoginObjectUrl === undefined){
+                registrations
+            }
+            console.log(arrReg)
+              let loggedIn = registrations.some(registration => 
+                registration.email === arrReg.email && 
+                registration.password === arrReg.password
+                )
+                arrReg.splice(LoginObjectUrl)
+            if (loggedIn) {
+                const stringi = JSON.stringify(LoginObjectUrl);
+                const buffer = Buffer.from(stringi);
+                res.writeHead(200, { "Content-Type": "text/javascript" });
+                res.write(buffer);
+                res.end();
+            } else {
+                res.writeHead(422, { "Content-Type": "text/javascript" })
+                res.write(loggedIn.toString());
+                res.end();
+            }
         }
         else {
         switch (url) {

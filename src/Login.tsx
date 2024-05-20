@@ -16,11 +16,12 @@ const navigate = useNavigate()
 const onSubmit = async (dataLog :FormData)=>{
   let encodedObject = encodeURIComponent(JSON.stringify(dataLog));
   const res = await fetch(`http://localhost:8008/youLogIn=${encodedObject}`)
-  if(typeof res === "object" ){  
+  if(res.status === 200){  
       alert("ZALOGOWANO POPRAWNIE")
       navigate("/youLogIn")
     } 
-  else  {
+  else if (res.status === 422){
+    console.log(res)
     alert("BŁĘDNE DANE MENDO")
 }
 }
