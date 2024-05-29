@@ -8,62 +8,63 @@ const getFiles = async () => {
 };
 
 const registrations = [];
+let logged = false
 
 http.createServer(async ({ url }, res) => {
     const [indexHtml, indexJs] = await getFiles();
-    
-    if (url.includes("Registration")) {
-        const registrationObjectUrl = url.split('=')[1];
-        const decodedReg = JSON.parse(decodeURIComponent(registrationObjectUrl));
-        const exists = registrations.some(registration =>
-            registration.email === decodedReg.email
-        );
-        if (!exists) {
-            registrations.push(decodedReg);
-            const stringi = JSON.stringify(decodedReg);
-            const buffer = Buffer.from(stringi);
-            res.writeHead(201, { "Content-Type": "application/json" });
-            res.write(buffer);
+    const [shortUrl, urlData] = url.split('=');
+
+    switch(shortUrl) {
+        case '/':
+            logged = false
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.write(indexHtml);
             res.end();
-        } else {
-            res.writeHead(409, { "Content-Type": "application/json" });
-            res.write(exists.toString());
+            break;
+        case '/js':
+            res.writeHead(200, { "Content-Type": "application/javascript" });
+            res.write(indexJs);
             res.end();
-        }
-    } else {
-        switch (true) {
-            case url === '/':
+            break;
+        case '/registration':
+            logged = false
+            if (urlData) {
+                let exist = false
+                const decodedData = JSON.parse(decodeURIComponent(urlData));
+                exist = registrations.some(registration =>
+                    registration.email === decodedData.email
+                );
+                !exist && registrations.push(decodedData);
+                res.writeHead(!exist ? 201 : 403, { "Content-Type": "text/plain" });
+                res.write(!exist ? 'użytkownik zalogowany poprawnie' : 'użytkownik zalogowany poprawnie');
+            }
+            else {
                 res.writeHead(200, { "Content-Type": "text/html" });
                 res.write(indexHtml);
-                res.end();
-                break;
-            case url ==='/js':
-                res.writeHead(200, { "Content-Type": "application/javascript" });
-                res.write(indexJs);
-                res.end();
-                break;
-            case url.includes('/youLogIn'):
-                const LoginObjectUrl = url.split('=')[1]
-                const map = registrations.map((reg)=>reg)
-                const result = typeof LoginObjectUrl === "string" ? JSON.parse(decodeURIComponent(LoginObjectUrl)) : map
-                let loggedIn = registrations.some(registration => 
-                    registration.email === result.email && 
-                    registration.password === result.password
+            }
+            res.end();
+            break;
+        case '/logged':
+            if (urlData) {
+                const decodedData = JSON.parse(decodeURIComponent(urlData))
+                logged = registrations.some(registration => 
+                    registration.email === decodedData.email && 
+                    registration.password === decodedData.password
                 )
-                for(let i = 0; i < registrations.length; i++) {
-                 if (registrations[i] === map[i]) {
-                    loggedIn = true
-                 }}
-                  if (loggedIn) {
-                    res.writeHead(200, {'Content-Type':"text/javascript"})
-                    res.write(indexHtml)
-                    res.end()
-                 return
             }
-            default:
-                res.writeHead(404, { "Content-Type": "text/plain" });
-                res.write('wypad');
-                res.end();
+            if (logged) {
+                res.writeHead(200, { "Content-Type": "text/html" });
+                res.write(indexHtml);
+            } 
+            else {
+                res.writeHead(403, { "Content-Type": "text/plain" });
+                res.write('nie jesteś zalogowany');
             }
-        }
+            res.end();
+            break;
+        default:
+            res.writeHead(404, { "Content-Type": "text/plain" });
+            res.write('wypad');
+            res.end();
+    }
     }).listen(8008);

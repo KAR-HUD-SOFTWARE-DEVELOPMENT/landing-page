@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
+import { Succesfull } from "./youLogIn";
 
 interface FormData {
   email: string;
@@ -13,7 +14,7 @@ export const Registration = ()=> {
   
   const onSubmit = async (dataReg : FormData) => {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
-    const res = await fetch(`http://localhost:8008/Registration=${encodedObject}`)
+    const res = await fetch(`http://localhost:8008/registration=${encodedObject}`)
     if (res.status === 201){
       alert("kongratulejszyn")
     }
@@ -43,6 +44,7 @@ export const Registration = ()=> {
       <button type="submit" onClick={()=>navigate("/")}> WRÓĆ DO LOGOWANIA</button>
       </div>
     </form>
+    <Succesfull />
     </div>
   )
 }

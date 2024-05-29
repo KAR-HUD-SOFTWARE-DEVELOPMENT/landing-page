@@ -21,6 +21,7 @@ const onSubmit = async (dataLog :FormData)=>{
       navigate("/logged")
     } 
   else if (res.status === 422){
+    console.log(res)
     alert("BŁĘDNE DANE MENDO")
 }
 }
