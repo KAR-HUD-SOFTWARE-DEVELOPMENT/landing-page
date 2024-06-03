@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
-import { Succesfull } from "./youLogIn";
 
 interface FormData {
   email: string;
@@ -14,37 +13,40 @@ export const Registration = ()=> {
   
   const onSubmit = async (dataReg : FormData) => {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
-    const res = await fetch(`http://localhost:8008/registration=${encodedObject}`)
+    const res = await fetch(`http://localhost:8888/registration=${encodedObject}`)
     if (res.status === 201){
       alert("kongratulejszyn")
     }
-    else if(res.status === 409){
+    else if(res.status === 403){
       alert("kajak od tyłu to wciąż kajak, a ty od tyłu jestes jebany, bo ktoś juz ci mejla zajumał")}
     
   }
   return (
     <div className="registration">
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
+      <label htmlFor="email">
       Email :
       <input {...register("email",{
         required:true,
       })}
+      name= "email"
       type="email"
       placeholder="Email" />
+      </label>
+      <label htmlFor="password">
       Password:
       <input {...register("password",{
         required:true,
       })}
+      name ="password"
       type="password"
       placeholder="Password"/>
-    </label>
+      </label>
       <button type="submit"> ZAREJESTRUJ</button>
       <div>
       <button type="submit" onClick={()=>navigate("/")}> WRÓĆ DO LOGOWANIA</button>
       </div>
     </form>
-    <Succesfull />
     </div>
   )
 }

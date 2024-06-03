@@ -17,7 +17,7 @@ http.createServer(async ({ url }, res) => {
     switch(shortUrl) {
         case '/':
             logged = false
-            res.writeHead(200, { "Content-Type": "text/html" });
+            res.writeHead(200, { "Content-Type": "text/html" })
             res.write(indexHtml);
             res.end();
             break;
@@ -36,7 +36,7 @@ http.createServer(async ({ url }, res) => {
                 );
                 !exist && registrations.push(decodedData);
                 res.writeHead(!exist ? 201 : 403, { "Content-Type": "text/plain" });
-                res.write(!exist ? 'użytkownik zalogowany poprawnie' : 'użytkownik zalogowany poprawnie');
+                res.write(!exist ? 'użytkownik zarejestrowany poprawnie' : 'użytkownik istnieje');
             }
             else {
                 res.writeHead(200, { "Content-Type": "text/html" });
@@ -67,4 +67,4 @@ http.createServer(async ({ url }, res) => {
             res.write('wypad');
             res.end();
     }
-    }).listen(8008);
+    }).listen(8888);
