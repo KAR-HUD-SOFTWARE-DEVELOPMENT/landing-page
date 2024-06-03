@@ -57,7 +57,7 @@ http.createServer(async ({ url }, res) => {
                 res.write(indexHtml);
             } 
             else {
-                res.writeHead(403, { "Content-Type": "text/plain" });
+                res.writeHead(422, { "Content-Type": "text/plain" });
                 res.write('nie jesteś zalogowany');
             }
             res.end();
