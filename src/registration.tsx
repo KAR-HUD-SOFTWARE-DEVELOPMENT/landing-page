@@ -13,7 +13,7 @@ export const Registration = ()=> {
   
   const onSubmit = async (dataReg : FormData) => {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
-    const res = await fetch(`http://localhost:8008/Registration=${encodedObject}`)
+    const res = await fetch(`http://localhost:8008/registration=${encodedObject}`)
     if (res.status === 201){
       alert("kongratulejszyn")
     }
@@ -22,22 +22,26 @@ export const Registration = ()=> {
     
   }
   return (
-    <div className="registration">
+    <div >
     <form onSubmit={handleSubmit(onSubmit)}>
-      <label>
+      <label htmlFor="email">
       Email :
       <input {...register("email",{
         required:true,
       })}
+      name= "email"
       type="email"
       placeholder="Email" />
+      </label>
+      <label htmlFor="password">
       Password:
       <input {...register("password",{
         required:true,
       })}
+      name ="password"
       type="password"
       placeholder="Password"/>
-    </label>
+      </label>
       <button type="submit"> ZAREJESTRUJ</button>
       <div>
       <button type="submit" onClick={()=>navigate("/")}> WRÓĆ DO LOGOWANIA</button>

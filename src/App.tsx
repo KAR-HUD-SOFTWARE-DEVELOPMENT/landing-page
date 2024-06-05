@@ -6,7 +6,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom"
-import { Succesfull } from "./youLogIn"
+import { Succesfull } from "./logged"
 
 export const App = () => {
     return (
@@ -14,7 +14,7 @@ export const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />} />
-              <Route path="/youLogIn" element={<Succesfull />} />
+              <Route path="/logged" element={<Succesfull />} />
               <Route path="/Registration" element={<Registration />} />
             </Routes>
           </BrowserRouter>
