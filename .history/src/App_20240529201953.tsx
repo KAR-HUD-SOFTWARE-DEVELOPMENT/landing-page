@@ -1,3 +1,4 @@
+import React from "react"
 import { Registration } from "./registration"
 import { Login } from "./Login"
 import {
@@ -5,7 +6,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom"
-import { Succesfull } from "./logged"
+import { Succesfull } from "./youLogIn"
 
 export const App = () => {
     return (

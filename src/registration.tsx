@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ export const Registration = ()=> {
     if (res.status === 201){
       alert("kongratulejszyn")
     }
-    else if(res.status === 409){
+    else if(res.status === 403){
       alert("kajak od tyłu to wciąż kajak, a ty od tyłu jestes jebany, bo ktoś juz ci mejla zajumał")}
     
   }

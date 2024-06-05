@@ -1,3 +1,4 @@
+import React, { createContext } from "react"
 import { Registration } from "./registration"
 import { Login } from "./Login"
 import {
@@ -5,11 +6,15 @@ import {
   Routes,
   Route,
 } from "react-router-dom"
-import { Succesfull } from "./logged"
+import { Succesfull } from "./youLogIn"
+
+export const Context = createContext({})
 
 export const App = () => {
+
     return (
         <>
+        <Context.Provider value={{theme: 'dark'}}>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />} />
@@ -17,6 +22,8 @@ export const App = () => {
               <Route path="/registration" element={<Registration />} />
             </Routes>
           </BrowserRouter>
+        </Context.Provider>
+
         </>
       );
     };
