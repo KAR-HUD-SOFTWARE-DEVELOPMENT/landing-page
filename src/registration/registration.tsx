@@ -1,6 +1,7 @@
 
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom";
+import "./registration.css"
 
 interface FormData {
   email: string;
@@ -15,10 +16,10 @@ export const Registration = ()=> {
     let encodedObject = encodeURIComponent(JSON.stringify(dataReg));
     const res = await fetch(`http://localhost:8008/registration=${encodedObject}`)
     if (res.status === 201){
-      alert("kongratulejszyn")
+      alert("Zarejestrowano Poprawnie")
     }
     else if(res.status === 403){
-      alert("kajak od tyłu to wciąż kajak, a ty od tyłu jestes jebany, bo ktoś juz ci mejla zajumał")}
+      alert("Email już istnieje")}
     
   }
   return (

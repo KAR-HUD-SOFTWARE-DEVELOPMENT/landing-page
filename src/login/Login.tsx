@@ -1,7 +1,7 @@
 
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
-
+import "./login.css"
 interface FormData {
   email: string;
   password: string;
@@ -20,7 +20,7 @@ const onSubmit = async (dataLog :FormData)=>{
       navigate("/logged")
     } 
   else if (res.status === 422){
-    alert("BŁĘDNE DANE MENDO")
+    alert("BŁĘDNE DANE")
 }
 }
 return(

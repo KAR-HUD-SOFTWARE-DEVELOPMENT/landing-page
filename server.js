@@ -11,36 +11,56 @@ const getFiles = async () => {
 const registrations = [];
 let logged = false;
 
-http.createServer(async ({ url }, res) => {
+const getCompanyName = (companyName) => {
+    return new Promise((resolve, reject) => {
+        const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+        api_key.apiKey = "cq5r2gpr01qhs6iu22igcq5r2gpr01qhs6iu22j0";
+        const finnhubClient = new finnhub.DefaultApi();
+        finnhubClient.stockSymbols("US", companyName, (error, data) => { {
+                if (data) {
+                    resolve(data);
+                } else {
+                    reject(error,"Nie znaleziono symbolu dla podanej firmy");
+                }
+            }
+        });
+    });
+
+};
+
+const getStockData = (symbol) => {
+    return new Promise((resolve, reject) => {
+        const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+        api_key.apiKey = "cq5r2gpr01qhs6iu22igcq5r2gpr01qhs6iu22j0";
+        const finnhubClient = new finnhub.DefaultApi();
+        finnhubClient.quote( symbol,(error, data) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(data)
+            }
+        });
+    });
+};
+
+
+
+
+
+http.createServer(async (req, res) => {
+    const url = req.url;
     const [indexHtml, indexJs] = await getFiles();
     const [shortUrl, urlData] = url.split('=');
 
-    const stockSymbol = async() => {
-            return new Promise((resolve, reject) => {
-            const api_key = finnhub.ApiClient.instance.authentications['api_key'];
-            api_key.apiKey = "cq5r2gpr01qhs6iu22igcq5r2gpr01qhs6iu22j0";
-            const finnhubClient = new finnhub.DefaultApi();
-            finnhubClient.stockSymbols("US", (error, data) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(data);
-                }
-            });
-        });
-    };
-       
-    switch(shortUrl) {
+    switch (shortUrl) {
         case '/':
             logged = false;
             res.writeHead(200, { "Content-Type": "text/html" });
-            res.write(indexHtml)
-            res.end();
+            res.write(indexHtml);
             break;
         case '/js':
             res.writeHead(200, { "Content-Type": "application/javascript" });
             res.write(indexJs);
-            res.end();
             break;
         case '/registration':
             logged = false;
@@ -59,13 +79,12 @@ http.createServer(async ({ url }, res) => {
                 res.writeHead(200, { "Content-Type": "text/html" });
                 res.write(indexHtml);
             }
-            res.end();
             break;
         case '/logged':
             if (urlData) {
                 const decodedData = JSON.parse(decodeURIComponent(urlData));
-                logged = registrations.some(registration => 
-                    registration.email === decodedData.email && 
+                logged = registrations.some(registration =>
+                    registration.email === decodedData.email &&
                     registration.password === decodedData.password
                 );
             }
@@ -76,26 +95,26 @@ http.createServer(async ({ url }, res) => {
                 res.writeHead(422, { "Content-Type": "text/plain" });
                 res.write('nie jesteś zalogowany');
             }
-            res.end();
             break;
         case '/getApi':
-                stockSymbol()
-                    .then(Data => {
-                        const stringi = JSON.stringify(Data);
-                        const buffer = Buffer.from(stringi);
-                        res.writeHead(200, { "Content-Type": "application/json" });
-                        res.write(buffer);
-                        res.end();
-                    })
-                    .catch(error => {
-                        res.writeHead(500, { "Content-Type": "text/plain" });
-                        res.write('Error');
-                        res.end();
-                    });
-                break;
+                const companyNameData = await getCompanyName("AAPL");
+                const stringifiedData = JSON.stringify(companyNameData);
+                res.writeHead(200, { "Content-Type": "text/plain" })
+                res.write(stringifiedData)
+            break;
+        case '/DetailsCompany?symbol':
+            if(urlData){
+                const stockData = await getStockData(urlData);
+                const stringifiedData = JSON.stringify(stockData);
+                res.writeHead(200, { "Content-Type": "application/json" });
+                res.write(stringifiedData);
+            }   
+            break;
         default:
             res.writeHead(404, { "Content-Type": "text/plain" });
             res.write('wypad');
-            res.end();
+            break;
     }
+    
+    res.end()
 }).listen(8008);
