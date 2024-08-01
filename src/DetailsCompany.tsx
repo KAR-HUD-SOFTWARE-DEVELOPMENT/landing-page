@@ -1,8 +1,8 @@
-
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
-import { useNavigate, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { FetchCompanyProfile } from './FetchCompanyProfile';
 
 Chart.register(...registerables);
 
@@ -12,7 +12,6 @@ interface StockData {
 }
 
 export const DetailsCompany= () => {
-    const NavigateToCompanies = useNavigate()
     const {symbol} = useParams<{ symbol?:string}>();
     const [stockData, setStockData] = useState<StockData[]>([]);
 
@@ -29,7 +28,7 @@ export const DetailsCompany= () => {
         }
         FetchDataDetails()
     },[symbol])
-    
+
     const chartData = {
         labels: Object.keys(stockData).map((prop)=>prop),
         datasets: [
@@ -52,10 +51,10 @@ export const DetailsCompany= () => {
     };
 
     return(
-    
+
     <div>
-        <Bar data={chartData} options={options} />
-        <button onClick={()=>NavigateToCompanies("/logged")}>Wróć Do listy firm</button>
+         <Bar data={chartData} options={options} /> 
+         <FetchCompanyProfile/>
     </div>
     ) 
 };

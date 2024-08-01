@@ -24,30 +24,30 @@ export const Registration = ()=> {
   }
   return (
     <div >
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label htmlFor="email">
-      Email :
-      <input {...register("email",{
-        required:true,
-      })}
-      name= "email"
-      type="email"
-      placeholder="Email" />
-      </label>
-      <label htmlFor="password">
-      Password:
-      <input {...register("password",{
-        required:true,
-      })}
-      name ="password"
-      type="password"
-      placeholder="Password"/>
-      </label>
-      <button type="submit"> ZAREJESTRUJ</button>
-      <div>
-      <button type="submit" onClick={()=>navigate("/")}> WRÓĆ DO LOGOWANIA</button>
-      </div>
-    </form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="email">
+          Email :
+          <input {...register("email",{
+            required:true,
+          })}
+          name= "email"
+          type="email"
+          placeholder="Email" />
+          </label>
+          <label htmlFor="password">
+          Password:
+          <input {...register("password",{
+            required:true,
+          })}
+          name ="password"
+          type="password"
+          placeholder="Password"/>
+          </label>
+        <button type="submit"> ZAREJESTRUJ</button>
+        <div>
+        <button type="submit" onClick={()=>navigate("/")}> WRÓĆ DO LOGOWANIA</button>
+        </div>
+      </form>
     </div>
   )
 }

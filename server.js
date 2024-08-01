@@ -4,12 +4,13 @@ const finnhub = require('finnhub');
 
 const getFiles = async () => {
     const indexHtml = await fs.readFile("./index.html");
-    const indexJs = await fs.readFile("./dist/r.bundle.js");
+    const indexJs = await fs.readFile("./dist/r.bundle.js")
     return [indexHtml, indexJs];
 };
 
 const registrations = [];
 let logged = false;
+
 
 const getCompanyName = (companyName) => {
     return new Promise((resolve, reject) => {
