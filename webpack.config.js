@@ -19,9 +19,15 @@ module.exports = {
             use: 'ts-loader',
             exclude: /node_modules/
             },
+            {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+            }
         ]
     },
     resolve: {
-        extensions : ['.js','.jsx','.tsx','.ts'] 
+        extensions : ['.js','.jsx','.tsx','.ts','.css'] ,
+        fallback: { "querystring": require.resolve("querystring-es3") }
+
     }
 }
